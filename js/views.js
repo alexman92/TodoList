@@ -87,6 +87,9 @@ App.Views.MainView = Backbone.View.extend({
                 function(data, status, ajax){
                     if(data.result === 'success') {
                         alert('Registration complete!');
+                        $('#form-reg').find('input[name=email]').val('');
+                        $('#form-reg').find('input[name=password]').val('');
+                        $('#form-reg').find('input[name=conf-password]').val('');
                     } else {
                          alert(data.description);
                     }
