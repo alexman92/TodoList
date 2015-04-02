@@ -1,0 +1,14 @@
+CREATE TABLE tUserLists(
+done INT NOT NULL ,
+listname VARCHAR( 60 ) NOT NULL ,
+login VARCHAR( 60 ) NOT NULL ,
+taskname VARCHAR( 60 ) NOT NULL
+)
+
+
+CREATE TABLE tUsers(
+id INT NOT NULL AUTO_INCREMENT ,
+login VARCHAR( 60 ) NOT NULL ,
+pass VARCHAR( 128 ) NOT NULL ,
+PRIMARY KEY ( id )
+)

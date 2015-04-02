@@ -1,0 +1,28 @@
+/**
+ * Author: alexman92
+ */
+
+#div-copyright {
+    color: white;
+   //overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 10px;
+}
+
+.white-bg {
+    background-color: white;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.del {
+    text-decoration: line-through;
+}
+
+.bg-done {
+    background-color: #5cb85c;
+}
