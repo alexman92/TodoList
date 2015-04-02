@@ -1,5 +1,5 @@
 {
-	"require-dev" : {
+	"require" : {
 		"php": "~5.5.12",
 		"sqlite3" : "~3.9.2"	
 	}
