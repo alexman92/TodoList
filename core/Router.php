@@ -28,52 +28,61 @@ class Router {
      
         $login = $data['email'];
         $password = base64_encode($data['password']);
-
+        $db = new DB(); 
+        if(!$db){
+            return $db->lastErrorMsg();
+        }
         try {
-                 
-            $dbHandler = DB::connect('root', '000000');
-            $user = DB::query(
+           
+            $user = $db->query(
                     "SELECT * FROM tUsers where login = '{$login}' and pass = '{$password}'"
                     );
-            if(!isset($user) || (count($user) === 0)) {
-                $login = '';
-                $result = 'error';
-                $description = 'No user with this login or password';
-            } else {
-                
-                try {
 
-                    $lists_arr = [];
-                    $lists = DB::query(
-                            "SELECT * FROM tUserLists where login = '{$login}'"
-                            );
-                    DB::close($dbHandler);
-                    if(isset($lists) || (count($lists) > 0)) {
-                        
-                        foreach($lists as $task => $task_param) {
-                            $lists_arr[$task_param['listname']][] = array(
-                                'taskname'=> $task_param['taskname'],
-                                'done' => $task_param['done'],
-                                );
-                        }
-                        
-                    } 
-
-                } catch (Exception $e) {
-                    $result = 'error';
-                    $description = 'Database error. Please contact us.';
-
+                while($row_user = $user->fetchArray()) {
+                    $user_flag = true;
                 }
+                if(!$user_flag) {
+                    $login = '';
+                    $result = 'error';
+                    $description = 'No user with this login or password';
+                } else {
+                        
+                    try {
 
-                $result = 'success';
-                $description = '';
-                $sessionId = uniqId(true);
-                
-            }
+                        $lists_arr = [];
+                        $lists = $db->query(
+                                "SELECT * FROM tUserLists where login = '{$login}'"
+                                );
+                            
+                        while ($row = $lists->fetchArray()) {
+
+                      
+                                $lists_arr[$row['listname']][] = array(
+                                    'taskname'=> $row['taskname'],
+                                    'done' => $row['done'],
+                                    );
+
+                        } 
+                        
+
+                    } catch (Exception $e) {
+                        $result = 'error';
+                        //$description = 'Database error. Please contact us.';
+                        $description = $db->lastErrorMsg();
+
+                    }
+
+                    $result = 'success';
+                    $description = '';
+                    $sessionId = uniqId(true);
+                    setcookie("sid", $sessionId, time()+(3600*4)); // 4 hours
+                }
+            
             
         } catch (Exception $e) {
             $result = 'error';
-            $description = 'Database error. Please contact us.';
+            //$description = 'Database error. Please contact us.';
+             $description = $db->lastErrorMsg();
     
         }
         
@@ -92,11 +101,10 @@ class Router {
         $password = base64_encode($data['password']);
 
         try {
-            $dbHandler = DB::connect('root', '000000');
-            DB::query(
+            $db = new DB();
+            $db->query(
                     "INSERT INTO tUsers(login, pass) VALUES('{$login}', '{$password}')"
                     );
-            DB::close($dbHandler);
             $result = 'success';
             $description = '';
         } catch (Exception $e) {
@@ -111,18 +119,23 @@ class Router {
     private static function saveList($data) {
      
          try {
-            $dbHandler = DB::connect('root', '000000');
+            $db = new DB();
             $login = $data['login'];
             $listname = $data['title'];
+            
+            $db->query("DELETE FROM tUserLists WHERE listname = '{$listname}'"
+            . "and login = '{$login}'");
+                
             foreach($data['tasks'] as $key=>$value) {
-                $done = $value['done'] === 'true' ? 1 : 0;  
-                DB::query(
-                        "INSERT INTO tUserLists VALUES(
+                $done = $value['done'] == 'true' ? 1 : 0; 
+                
+
+                $db->query(
+                        "INSERT INTO tUserLists(login, listname, taskname, done) VALUES(
                             '{$login}', '{$listname}', '{$value['taskname']}', '{$done}'
                         )"
                         );
             }
-            DB::close($dbHandler);
             $result = 'success';
             $description = '';
         } catch (Exception $e) {
@@ -139,12 +152,12 @@ class Router {
         $listname = $data['listname'];
         
           try {
-                    $dbHandler = DB::connect('root', '000000');
+                    $dbHandler = new DB();
 
-                    DB::query(
+                    $db->query(
                             "DELETE FROM tUserLists where login = '{$login}' and listname = '{$listname}'"
                             );
-                    DB::close($dbHandler);
+                   
                     
                     $result ='success';
                     $description = '';

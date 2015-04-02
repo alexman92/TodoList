@@ -19,7 +19,7 @@ App.Views.MainView = Backbone.View.extend({
     },
     
     render: function() {
-        this.$el.html( this.template() )
+        this.$el.html( this.template() );
         return this;
     }, 
     
@@ -35,10 +35,10 @@ App.Views.MainView = Backbone.View.extend({
             return false;
         }
         
-        /*if(!this.validateEmail(name)) {
+        if(!this.validateEmail(name)) {
             alert("Please enter correct email");
             return false;
-        }*/
+        }
         $.getJSON( 
                 'core/core.php',
                 enter_params,
@@ -110,7 +110,8 @@ App.Views.MainView = Backbone.View.extend({
 App.Views.TodoPageView = Backbone.View.extend({
     el: '#div-page-content',
     events: {
-        'click #but-add-todo': 'addTodoList'
+        'click #but-add-todo': 'addTodoList',
+        'click #but-logout': 'logout'
     },
     
     initialize: function() {
@@ -125,6 +126,12 @@ App.Views.TodoPageView = Backbone.View.extend({
     
     addTodoList: function() {
         new App.Views.TodoView();
+    },
+    
+    logout: function() {
+        setLocalData('sid','');
+        setLocalData('login', '');
+        window.location.reload();
     }
 });
 
@@ -284,7 +291,7 @@ App.Views.TodoTaskView = Backbone.View.extend({
   
         this.name = name;
         if(done !== undefined) {
-            this.done = done === '0' ? false : true;
+            this.done = done == '0' ? false : true;
         }
         this.template = template('tmpl-todotask');
         this.render();

@@ -11,7 +11,11 @@ App.Controllers.MainController = Backbone.Router.extend({
     // renders start page
     startPage: function() {
         new App.Views.MainView();
-    } 
+    },
+    
+    enterPage: function() {
+        
+    }
     
 });
 

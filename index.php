@@ -70,8 +70,9 @@
                     
                     <div class="text-right">
                     <span>You are logged as <strong><%= this.model.get('login') %><strong></span>
-                    </div>
+                    <button id="but-logout" class="btn btn-default">Logout</button></div>
                 </div>
+               
             </div>
             <div class="container">
                 <div class="row" id="div-todos">
@@ -96,8 +97,8 @@
                             </th>
                             <th class="text-right">
                                 <button class="btn btn-xs edit-list"><span class="glyphicon glyphicon-pencil"></span></button>
-                                <button class="btn btn-xs save-todo"><span class="glyphicon glyphicon-floppy-disk"></span></button>
                                 <button class="btn btn-xs save-list" style="display: none"><span class="glyphicon  glyphicon-ok"></span></button>
+                                <button class="btn btn-xs save-todo"><span class="glyphicon glyphicon-floppy-save"></span></button>
                                 <button class="btn btn-xs remove-list"><span class="glyphicon glyphicon-remove"></span></button>
                             </th>
                         </tr>

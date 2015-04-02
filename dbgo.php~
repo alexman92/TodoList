@@ -1,0 +1,33 @@
+<?php 
+  class MyDB extends SQLite3
+   {
+      function __construct()
+      {
+         $this->open('my_db.db');
+      }
+   }
+   $db = new MyDB();
+   if(!$db){
+      echo $db->lastErrorMsg();
+   } else {
+      echo "Opened database successfully\n";
+   }
+
+  $query_table_users = $db->query( "
+                                        CREATE TABLE if not exists tUsers(
+                                        login VARCHAR( 60 ) NOT NULL ,
+                                        pass VARCHAR( 128 ) NOT NULL ,
+                                        PRIMARY KEY ( id )
+                                        );
+                                    "); 
+
+        
+        $query_table_userlists = $db->query( "CREATE TABLE if not exists tUserLists(
+                                        done INT NOT NULL ,
+                                        listname VARCHAR( 60 ) NOT NULL ,
+                                        login VARCHAR( 60 ) NOT NULL ,
+                                        taskname VARCHAR( 60 ) NOT NULL
+                                        );
+                                    "); 
+
+?>
